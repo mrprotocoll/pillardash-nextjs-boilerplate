@@ -2,12 +2,12 @@
 
 import React, { useState } from "react";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { Button, Input } from "pillardash-ui-react";
 
+import Logo from "@/components/layouts/Logo";
 import EyeIcon from "@/components/utilities/Icons/EyeIcon";
 import EyeOffIcon from "@/components/utilities/Icons/EyeOffIcon";
 import LockIcon from "@/components/utilities/Icons/LockIcon";
@@ -24,14 +24,8 @@ export default function LoginPage() {
     return (
         <>
             <div className='w-full max-w-md space-y-5 text-center'>
-                <Link href={ROUTES.home}>
-                    <Image
-                        src='/logo.svg'
-                        alt='logo'
-                        width={100}
-                        height={60}
-                        className='mx-auto rounded-full'
-                    />
+                <Link href={ROUTES.home} className='mx-auto flex items-center justify-center'>
+                    <Logo />
                 </Link>
                 <div>
                     <p className='-space-x-6 text-[28px] font-[600] text-gray-600'>Welcome Back</p>

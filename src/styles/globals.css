@@ -18,6 +18,11 @@
     }
 }
 
+* {
+    scrollbar-color: #b4b4b4 #f1f1f1;
+    scrollbar-width: thin;
+}
+
 body {
     color: var(--foreground);
     background: var(--background);
