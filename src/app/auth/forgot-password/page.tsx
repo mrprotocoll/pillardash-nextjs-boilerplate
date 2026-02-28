@@ -11,29 +11,27 @@ import CONSTANTS from "@/lib/constants";
 import { ROUTES } from "@/lib/routes";
 
 export default function ResetPassword() {
-    const [showCountDown, setShowCountDown] = useState<boolean>(false);
-    const [countDown, setCountDown] = useState<number>(30);
-    const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
+    const [countDown, setCountDown] = useState<number>(0);
 
     const handleClick = () => {
-        setShowCountDown(true);
         setCountDown(30);
-        setIsButtonDisabled(true);
     };
 
     useEffect(() => {
-        let timer: ReturnType<typeof setInterval>;
-        if (showCountDown && countDown > 0) {
-            timer = setInterval(() => {
-                setCountDown((prev) => prev - 1);
-            }, 1000);
-        } else if (countDown === 0) {
-            setIsButtonDisabled(false);
-            setShowCountDown(false);
+        if (countDown <= 0) {
+            return;
         }
 
-        return () => clearInterval(timer);
-    }, [showCountDown, countDown]);
+        const timer = setTimeout(() => {
+            setCountDown((prev) => prev - 1);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, [countDown]);
+
+    const showCountDown = countDown > 0;
+    const isButtonDisabled = countDown > 0;
+
     return (
         <>
             <div className='w-full max-w-md space-y-5 text-gray-600'>

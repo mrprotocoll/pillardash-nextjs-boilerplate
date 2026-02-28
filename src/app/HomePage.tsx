@@ -30,6 +30,13 @@ export const smoothScrollTo = (elementId: string) => {
     }
 };
 
+const floatingElements = Array.from({ length: 20 }, () => ({
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    animationDelay: `${Math.random() * 3}s`,
+    animationDuration: `${3 + Math.random() * 4}s`,
+}));
+
 const HomePage = () => {
     const [scrollY, setScrollY] = useState(0);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -69,7 +76,7 @@ const HomePage = () => {
     const features = [
         {
             icon: <Zap className='h-8 w-8' />,
-            title: "Next.js 15",
+            title: "Next.js 16",
             description:
                 "Latest version with App Router, Server Components, and enhanced performance optimizations out of the box.",
             gradient: "from-blue-500 to-cyan-500",
@@ -155,16 +162,11 @@ const HomePage = () => {
                 <div className='absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-pink-900/20' />
 
                 {/* Floating Elements */}
-                {[...Array(20)].map((_, i) => (
+                {floatingElements.map((style, i) => (
                     <div
                         key={i}
                         className='absolute h-2 w-2 animate-pulse rounded-full bg-white/10'
-                        style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            animationDelay: `${Math.random() * 3}s`,
-                            animationDuration: `${3 + Math.random() * 4}s`,
-                        }}
+                        style={style}
                     />
                 ))}
             </div>
@@ -240,7 +242,7 @@ const HomePage = () => {
                         </h1>
 
                         <p className='mx-auto mb-12 max-w-3xl text-xl leading-relaxed text-slate-300 md:text-2xl'>
-                            The ultimate Next.js 15 starter template with TypeScript, Tailwind CSS,
+                            The ultimate Next.js 16 starter template with TypeScript, Tailwind CSS,
                             and developer-friendly tooling.
                             <span className='bg-gradient-to-r from-yellow-400 to-pink-400 bg-clip-text font-semibold text-transparent'>
                                 {" "}
