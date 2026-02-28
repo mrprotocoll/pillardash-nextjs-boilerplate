@@ -1,4 +1,18 @@
+import type { Metadata } from "next";
+
+import CONSTANTS from "@/lib/constants";
 import "@/styles/globals.css";
+
+export const metadata: Metadata = {
+    title: {
+        default: `Auth :: ${CONSTANTS.appName}`,
+        template: `%s :: ${CONSTANTS.appName}`,
+    },
+    robots: {
+        index: false,
+        follow: false,
+    },
+};
 
 export default function AuthLayout({
     children,

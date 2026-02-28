@@ -1,6 +1,6 @@
+import { authEndpoints } from "@/api/endpoints/auth-endpoints";
 import api from "@/api/index";
 import { ApiResponse } from "@/api/types";
-import { authEndpoints } from "@/app/auth/api/endpoints";
 import { RegisterFormData } from "@/app/auth/types";
 
 const AuthRequests = {
@@ -25,7 +25,6 @@ const AuthRequests = {
         }
     },
 
-    // Email Verification
     sendVerificationEmail: async (email: string) => {
         try {
             const response = await api.post(authEndpoints.sendVerificationEmail, { email });
@@ -53,7 +52,6 @@ const AuthRequests = {
         }
     },
 
-    // Password Management
     requestPasswordReset: async (email: string) => {
         try {
             const response = await api.post(authEndpoints.requestPasswordReset, { email });
@@ -84,7 +82,6 @@ const AuthRequests = {
         }
     },
 
-    // Session/Token Management
     refreshToken: async (refreshToken: string) => {
         try {
             const response = await api.post(authEndpoints.refreshToken, { refreshToken });
@@ -94,7 +91,6 @@ const AuthRequests = {
         }
     },
 
-    // User Status Checks
     checkEmailAvailability: async (email: string) => {
         try {
             const response = await api.get(

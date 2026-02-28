@@ -9,6 +9,9 @@ const baseUrl = CONSTANTS.appUrl;
 
 export const siteMetadata: Metadata = {
     metadataBase: new URL(baseUrl),
+    alternates: {
+        canonical: "/",
+    },
     title: {
         default: `${appName} | ${CONSTANTS.slogan}`,
         template: `%s :: ${appName}`,
@@ -24,7 +27,7 @@ export const siteMetadata: Metadata = {
         googleBot: "index, follow",
     },
     appleWebApp: {
-        title: "title",
+        title: appName,
         statusBarStyle: "black-translucent",
         capable: true,
     },
@@ -105,5 +108,8 @@ export const siteMetadata: Metadata = {
         ],
     },
     applicationName: appName,
+    category: "technology",
+    creator: CONSTANTS.author.name,
+    publisher: CONSTANTS.author.name,
     authors: [CONSTANTS.author],
 };

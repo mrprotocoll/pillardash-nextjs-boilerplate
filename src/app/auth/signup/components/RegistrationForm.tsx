@@ -4,7 +4,7 @@ import { EyeIcon } from "lucide-react";
 import { Button, Input, alert } from "pillardash-ui-react";
 
 import { handleApiResponse } from "@/api/config/util";
-import Requests from "@/app/auth/api/requests";
+import AuthRequests from "@/api/requests/auth-requests";
 import EmailVerificationOTP from "@/app/auth/signup/components/EmailVerificationOTP";
 import { RegisterFormData } from "@/app/auth/types";
 import Logo from "@/components/layouts/Logo";
@@ -59,7 +59,7 @@ export default function RegistrationForm() {
                 setLoading(true);
 
                 // Simulate API call for registration
-                const response = await Requests.register(formData);
+                const response = await AuthRequests.register(formData);
 
                 // Store email in localStorage for verification
                 localStorage.setItem(CONSTANTS.dev.emailVerifyKey, formData.email);
@@ -82,7 +82,7 @@ export default function RegistrationForm() {
             <EmailVerificationOTP
                 email={formData.email}
                 onVerify={async (otp) => {
-                    const response = await Requests.verifyEmailOTP(formData.email, otp);
+                    const response = await AuthRequests.verifyEmailOTP(formData.email, otp);
                     handleApiResponse({
                         response,
                         onSuccess: () => {
@@ -91,7 +91,7 @@ export default function RegistrationForm() {
                     });
                 }}
                 onResend={async () => {
-                    const response = await Requests.resendVerificationEmail(formData.email);
+                    const response = await AuthRequests.resendVerificationEmail(formData.email);
                     handleApiResponse({
                         response,
                         onSuccess: () => alert.success("Verification code resent successfully"),
