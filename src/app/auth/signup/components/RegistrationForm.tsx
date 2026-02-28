@@ -4,16 +4,17 @@ import { EyeIcon } from "lucide-react";
 import { Button, Input, alert } from "pillardash-ui-react";
 
 import { handleApiResponse } from "@/api/config/util";
-import AuthRequests from "@/api/requests/auth-requests";
 import EmailVerificationOTP from "@/app/auth/signup/components/EmailVerificationOTP";
 import { RegisterFormData } from "@/app/auth/types";
 import Logo from "@/components/layouts/Logo";
 import EyeOffIcon from "@/components/utilities/Icons/EyeOffIcon";
 import LockIcon from "@/components/utilities/Icons/LockIcon";
 import MessagingIcon from "@/components/utilities/Icons/MessagingIcon";
+import { useAuth } from "@/hooks/useAuth";
 import CONSTANTS from "@/lib/constants";
 
 export default function RegistrationForm() {
+    const { register, verifyEmailOTP, resendVerificationEmail, state } = useAuth();
     const [formData, setFormData] = useState<RegisterFormData>({
         firstName: "",
         lastName: "",
@@ -22,7 +23,6 @@ export default function RegistrationForm() {
         confirmPassword: "",
     });
     const [showPassword, setShowPassword] = useState(false);
-    const [loading, setLoading] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [registrationStatus, setRegistrationStatus] = useState<
@@ -54,14 +54,10 @@ export default function RegistrationForm() {
     };
 
     const handleSubmit = async () => {
-        try {
-            if (validateForm()) {
-                setLoading(true);
+        if (validateForm()) {
+            try {
+                const response = await register(formData);
 
-                // Simulate API call for registration
-                const response = await AuthRequests.register(formData);
-
-                // Store email in localStorage for verification
                 localStorage.setItem(CONSTANTS.dev.emailVerifyKey, formData.email);
 
                 handleApiResponse({
@@ -71,9 +67,9 @@ export default function RegistrationForm() {
                         setRegistrationStatus("verification");
                     },
                 });
+            } catch {
+                // handled by global error handler
             }
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -82,7 +78,7 @@ export default function RegistrationForm() {
             <EmailVerificationOTP
                 email={formData.email}
                 onVerify={async (otp) => {
-                    const response = await AuthRequests.verifyEmailOTP(formData.email, otp);
+                    const response = await verifyEmailOTP(formData.email, otp);
                     handleApiResponse({
                         response,
                         onSuccess: () => {
@@ -91,12 +87,14 @@ export default function RegistrationForm() {
                     });
                 }}
                 onResend={async () => {
-                    const response = await AuthRequests.resendVerificationEmail(formData.email);
+                    const response = await resendVerificationEmail(formData.email);
                     handleApiResponse({
                         response,
                         onSuccess: () => alert.success("Verification code resent successfully"),
                     });
                 }}
+                isVerifying={state.verifyEmailOTP.isPending}
+                isResending={state.resendVerificationEmail.isPending}
             />
         );
     }
@@ -187,7 +185,12 @@ export default function RegistrationForm() {
                 }
             />
 
-            <Button disabled={loading} loading={loading} onClick={handleSubmit} className='w-full'>
+            <Button
+                disabled={state.register.isPending}
+                loading={state.register.isPending}
+                onClick={handleSubmit}
+                className='w-full'
+            >
                 Sign Up
             </Button>
         </div>

@@ -5,15 +5,24 @@ import { useEffect, useState } from "react";
 import { Mail, RefreshCw, Timer } from "lucide-react";
 import { alert } from "pillardash-ui-react";
 
+interface EmailVerificationOTPProps {
+    email?: string;
+    onVerify?: (otp: string) => Promise<void> | void;
+    onResend?: () => Promise<void> | void;
+    isVerifying?: boolean;
+    isResending?: boolean;
+}
+
 const EmailVerificationOTP = ({
     email = "john.doe@example.com",
     onVerify = (otp: string) => console.log("Verify OTP:", otp),
     onResend = () => console.log("Resend OTP"),
-}) => {
+    isVerifying = false,
+    isResending = false,
+}: EmailVerificationOTPProps) => {
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [timer, setTimer] = useState(60);
     const [canResend, setCanResend] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
 
     // Timer countdown
@@ -59,23 +68,24 @@ const EmailVerificationOTP = ({
 
     // Handle verification
     const handleVerify = async (otpCode: string) => {
-        setIsLoading(true);
         try {
             await onVerify(otpCode);
         } catch (err) {
             console.log(err);
             alert.error("Invalid OTP. Please try again.");
             setError("Invalid OTP. Please try again.");
-        } finally {
-            setIsLoading(false);
         }
     };
 
     // Handle resend
-    const handleResend = () => {
+    const handleResend = async () => {
         setTimer(60);
         setCanResend(false);
-        onResend();
+        try {
+            await onResend();
+        } catch {
+            alert.error("Unable to resend code. Please try again.");
+        }
     };
 
     return (
@@ -128,9 +138,12 @@ const EmailVerificationOTP = ({
                     ) : (
                         <button
                             onClick={handleResend}
+                            disabled={isResending}
                             className='mx-auto flex items-center justify-center text-sm font-semibold text-primary-600 transition-colors hover:text-primary-700'
                         >
-                            <RefreshCw className='mr-2 h-4 w-4' />
+                            <RefreshCw
+                                className={`mr-2 h-4 w-4 ${isResending ? "animate-spin" : ""}`}
+                            />
                             Resend Code
                         </button>
                     )}
@@ -139,10 +152,10 @@ const EmailVerificationOTP = ({
                 {/* Verify Button */}
                 <button
                     onClick={() => handleVerify(otp.join(""))}
-                    disabled={otp.some((digit) => digit === "") || isLoading}
+                    disabled={otp.some((digit) => digit === "") || isVerifying}
                     className='flex w-full items-center justify-center rounded-xl bg-primary-500 px-6 py-3 font-semibold text-white transition-colors duration-200 hover:bg-primary-600 disabled:cursor-not-allowed disabled:bg-gray-300'
                 >
-                    {isLoading ? <RefreshCw className='h-5 w-5 animate-spin' /> : "Verify Email"}
+                    {isVerifying ? <RefreshCw className='h-5 w-5 animate-spin' /> : "Verify Email"}
                 </button>
 
                 {/* Help Text */}

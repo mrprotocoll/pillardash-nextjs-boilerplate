@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@reduxjs/toolkit": "^2.8.2",
+        "@tanstack/react-query": "^5.90.21",
         "@typescript-eslint/eslint-plugin": "^8.24.0",
         "@typescript-eslint/parser": "^8.24.0",
         "axios": "1.13.5",

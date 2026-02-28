@@ -6,15 +6,36 @@ import Link from "next/link";
 
 import { Button, Input } from "pillardash-ui-react";
 
+import { handleApiResponse } from "@/api/config/util";
 import MessagingIcon from "@/components/utilities/Icons/MessagingIcon";
+import { useAuth } from "@/hooks/useAuth";
 import CONSTANTS from "@/lib/constants";
 import { ROUTES } from "@/lib/routes";
 
 export default function ResetPassword() {
+    const { requestPasswordReset, state } = useAuth();
     const [countDown, setCountDown] = useState<number>(0);
+    const [email, setEmail] = useState("");
+    const [error, setError] = useState<string>("");
 
-    const handleClick = () => {
-        setCountDown(30);
+    const handleClick = async () => {
+        if (!email.trim()) {
+            setError("Email is required");
+            return;
+        }
+
+        try {
+            const response = await requestPasswordReset(email);
+
+            handleApiResponse({
+                response,
+                onSuccess: () => {
+                    setCountDown(30);
+                },
+            });
+        } catch {
+            // handled by global error handler
+        }
     };
 
     useEffect(() => {
@@ -30,7 +51,7 @@ export default function ResetPassword() {
     }, [countDown]);
 
     const showCountDown = countDown > 0;
-    const isButtonDisabled = countDown > 0;
+    const isButtonDisabled = countDown > 0 || state.requestPasswordReset.isPending;
 
     return (
         <>
@@ -45,7 +66,15 @@ export default function ResetPassword() {
                         id='userId'
                         label='Email'
                         type='text'
-                        value={""}
+                        value={email}
+                        onChange={(event) => {
+                            setEmail(event.target.value);
+
+                            if (error) {
+                                setError("");
+                            }
+                        }}
+                        error={error}
                         placeholder='Enter your email'
                         icon={<MessagingIcon />}
                     />
@@ -60,6 +89,7 @@ export default function ResetPassword() {
                     className='mt-4 w-full'
                     onClick={handleClick}
                     disabled={isButtonDisabled}
+                    loading={state.requestPasswordReset.isPending}
                 >
                     Send reset link
                 </Button>
