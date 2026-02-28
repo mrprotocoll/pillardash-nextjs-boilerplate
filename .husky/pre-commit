@@ -7,5 +7,10 @@ npx lint-staged ||
     false;
 )
 
+# Run build
+echo '👷 Running build: please wait.... 🚀'
+
+npm run build
+
 echo '👷 No error found: committing this now.... ✨'
 

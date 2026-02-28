@@ -4,6 +4,7 @@ import CONSTANTS from "@/lib/constants";
 
 export default function robots(): MetadataRoute.Robots {
     const baseUrl: string = CONSTANTS.appUrl;
+
     return {
         rules: {
             userAgent: "*",
@@ -11,5 +12,6 @@ export default function robots(): MetadataRoute.Robots {
             disallow: ["/admin/"],
         },
         sitemap: `${baseUrl}/sitemap.xml`,
+        host: baseUrl,
     };
 }
