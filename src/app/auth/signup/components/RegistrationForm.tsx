@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 
 import { EyeIcon } from "lucide-react";
-import { Button, Input, alert } from "pillardash-ui-react";
 
 import { handleApiResponse } from "@/api/config/util";
 import EmailVerificationOTP from "@/app/auth/signup/components/EmailVerificationOTP";
 import { RegisterFormData } from "@/app/auth/types";
 import Logo from "@/components/layouts/Logo";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 import EyeOffIcon from "@/components/utilities/Icons/EyeOffIcon";
 import LockIcon from "@/components/utilities/Icons/LockIcon";
 import MessagingIcon from "@/components/utilities/Icons/MessagingIcon";
 import { useAuth } from "@/hooks/useAuth";
+import { alert } from "@/lib/alert";
 import CONSTANTS from "@/lib/constants";
 
 export default function RegistrationForm() {
@@ -155,9 +157,7 @@ export default function RegistrationForm() {
                 rightIcon={
                     <button
                         type='button'
-                        className={
-                            "absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
-                        }
+                        className='text-gray-400 hover:text-gray-600'
                         onClick={() => setShowPassword(!showPassword)}
                     >
                         {showPassword ? <EyeOffIcon /> : <EyeIcon />}
@@ -178,7 +178,7 @@ export default function RegistrationForm() {
                     <button
                         type='button'
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className='absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600'
+                        className='text-gray-400 hover:text-gray-600'
                     >
                         {showConfirmPassword ? <EyeOffIcon /> : <EyeIcon />}
                     </button>

@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 
-import { Button, Input } from "pillardash-ui-react";
-
 import { handleApiResponse } from "@/api/config/util";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 import MessagingIcon from "@/components/utilities/Icons/MessagingIcon";
 import { useAuth } from "@/hooks/useAuth";
 import CONSTANTS from "@/lib/constants";
@@ -96,7 +96,7 @@ export default function ResetPassword() {
                 <div className='flex gap-3'>
                     <p>Remember your password? </p>{" "}
                     <Link href={ROUTES.login}>
-                        <p className='text-sm text-primary'>Go back to login</p>
+                        <p className='text-primary text-sm'>Go back to login</p>
                     </Link>
                 </div>
             </div>

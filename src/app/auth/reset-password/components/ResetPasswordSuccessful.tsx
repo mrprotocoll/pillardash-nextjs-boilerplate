@@ -1,7 +1,6 @@
 "use client";
 
-import { Button } from "pillardash-ui-react";
-
+import Button from "@/components/ui/Button";
 import CONSTANTS from "@/lib/constants";
 
 export default function ResetPasswordSuccessful() {
@@ -18,7 +17,7 @@ export default function ResetPasswordSuccessful() {
 
                         <Button
                             type='submit'
-                            className='mt-4 w-full rounded-lg hover:bg-primary-300 hover:text-white'
+                            className='hover:bg-primary-300 mt-4 w-full rounded-lg hover:text-white'
                         >
                             Go back to Login
                         </Button>
