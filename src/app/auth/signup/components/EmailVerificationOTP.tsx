@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 
 import { Mail, RefreshCw, Timer } from "lucide-react";
-import { alert } from "pillardash-ui-react";
+
+import { alert } from "@/lib/alert";
 
 interface EmailVerificationOTPProps {
     email?: string;
@@ -22,19 +23,17 @@ const EmailVerificationOTP = ({
 }: EmailVerificationOTPProps) => {
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [timer, setTimer] = useState(60);
-    const [canResend, setCanResend] = useState(false);
+    const canResend = timer === 0;
     const [error, setError] = useState("");
 
     // Timer countdown
     useEffect(() => {
-        if (timer > 0) {
-            const interval = setInterval(() => {
-                setTimer(timer - 1);
-            }, 1000);
-            return () => clearInterval(interval);
-        } else {
-            setCanResend(true);
-        }
+        if (timer === 0) return;
+
+        const interval = setInterval(() => {
+            setTimer((remaining) => Math.max(remaining - 1, 0));
+        }, 1000);
+        return () => clearInterval(interval);
     }, [timer]);
 
     // Handle OTP input
@@ -80,7 +79,6 @@ const EmailVerificationOTP = ({
     // Handle resend
     const handleResend = async () => {
         setTimer(60);
-        setCanResend(false);
         try {
             await onResend();
         } catch {
@@ -89,12 +87,12 @@ const EmailVerificationOTP = ({
     };
 
     return (
-        <div className='flex min-h-screen items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 p-4'>
+        <div className='from-primary-50 to-primary-100 flex min-h-screen items-center justify-center bg-gradient-to-br p-4'>
             <div className='w-full max-w-md rounded-2xl bg-white p-8 text-center shadow-2xl md:p-12'>
                 {/* Header */}
                 <div className='mb-8'>
-                    <div className='mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary-100'>
-                        <Mail className='h-8 w-8 text-secondary-500' />
+                    <div className='bg-secondary-100 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full'>
+                        <Mail className='text-secondary-500 h-8 w-8' />
                     </div>
                     <h1 className='mb-2 text-2xl font-bold text-gray-800 md:text-3xl'>
                         Verify Your Email
@@ -102,7 +100,7 @@ const EmailVerificationOTP = ({
                     <p className='text-sm text-gray-600 md:text-base'>
                         We&#39;ve sent a 6-digit code to
                     </p>
-                    <p className='font-semibold text-primary-600'>{email}</p>
+                    <p className='text-primary-600 font-semibold'>{email}</p>
                 </div>
 
                 {/* OTP Input */}
@@ -118,7 +116,7 @@ const EmailVerificationOTP = ({
                                 value={digit}
                                 onChange={(e) => handleOtpChange(index, e.target.value)}
                                 onKeyDown={(e) => handleKeyDown(index, e)}
-                                className={`h-12 w-12 rounded-xl border-2 text-center text-xl font-bold text-dark transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                                className={`text-dark focus:ring-primary-500 h-12 w-12 rounded-xl border-2 text-center text-xl font-bold transition-colors focus:ring-2 focus:outline-none ${
                                     error ? "border-red-300" : "border-gray-300"
                                 }`}
                             />
@@ -139,7 +137,7 @@ const EmailVerificationOTP = ({
                         <button
                             onClick={handleResend}
                             disabled={isResending}
-                            className='mx-auto flex items-center justify-center text-sm font-semibold text-primary-600 transition-colors hover:text-primary-700'
+                            className='text-primary-600 hover:text-primary-700 mx-auto flex items-center justify-center text-sm font-semibold transition-colors'
                         >
                             <RefreshCw
                                 className={`mr-2 h-4 w-4 ${isResending ? "animate-spin" : ""}`}
@@ -153,7 +151,7 @@ const EmailVerificationOTP = ({
                 <button
                     onClick={() => handleVerify(otp.join(""))}
                     disabled={otp.some((digit) => digit === "") || isVerifying}
-                    className='flex w-full items-center justify-center rounded-xl bg-primary-500 px-6 py-3 font-semibold text-white transition-colors duration-200 hover:bg-primary-600 disabled:cursor-not-allowed disabled:bg-gray-300'
+                    className='bg-primary-500 hover:bg-primary-600 flex w-full items-center justify-center rounded-xl px-6 py-3 font-semibold text-white transition-colors duration-200 disabled:cursor-not-allowed disabled:bg-gray-300'
                 >
                     {isVerifying ? <RefreshCw className='h-5 w-5 animate-spin' /> : "Verify Email"}
                 </button>

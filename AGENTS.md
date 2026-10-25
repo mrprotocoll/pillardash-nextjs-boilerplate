@@ -17,7 +17,7 @@
 - **Never access Redux state with `useSelector` without a typed selector** — use `RootState` from `@/redux/store`
 - **Never hardcode routes** — use constants from `@/lib/routes.ts`
 - **Never duplicate helper functions locally** — before adding formatting, parsing, validation, or reusable utility functions, check `@/lib/` first. Add to `constants.ts` or a new dedicated helper file if truly reusable.
-- **Never use `window.confirm()`** — always use `alert.confirm` from `pillardash-ui-react` for confirmation dialogs. It returns `Promise<boolean>` and provides consistent theming.
+- **Notifications**: use `alert.success` and `alert.error` from `@/lib/alert`; the root `NotificationProvider` displays them.
 
 ---
 
@@ -41,11 +41,13 @@
 │   │   └── ...
 │   ├── components/
 │   │   ├── layouts/       # AppWrapper, Logo
+│   │   ├── ui/            # Button, Input, NotificationProvider
 │   │   └── utilities/     # Icons
 │   ├── hooks/             # useAuth, useOnMountUnsafe
 │   ├── lib/
 │   │   ├── constants.ts   # App-wide constants (name, URLs, colors, SEO keywords)
 │   │   ├── metadata.ts    # Next.js Metadata config
+│   │   ├── alert.ts       # App notifications
 │   │   └── routes.ts      # Route path constants — always use these
 │   ├── redux/
 │   │   ├── store.ts       # configureStore + persist
@@ -153,7 +155,7 @@ If a route doesn't exist in `routes.ts`, add it there first, then use the consta
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { Button, Card, SkeletonCard } from "pillardash-ui-react";
+import Button from "@/components/ui/Button";
 import { useState } from "react";
 
 export default function ExamplePage() {
@@ -167,9 +169,9 @@ export default function ExamplePage() {
             </div>
 
             {isLoading ? (
-                <SkeletonCard rows={5} />
+                <p>Loading...</p>
             ) : error ? (
-                <ErrorState error={error} />
+                <p>Unable to load data.</p>
             ) : (
                 <div>{/* content */}</div>
             )}
@@ -198,7 +200,7 @@ import { ApiErrorHandler } from "@/api/config/error";
 
 // In React Query mutations
 onError: (error) => {
-    ApiErrorHandler.handle(error); // shows toast via pillardash-ui-react alert
+    ApiErrorHandler.handle(error); // shows a notification via @/lib/alert
 };
 
 // Manual

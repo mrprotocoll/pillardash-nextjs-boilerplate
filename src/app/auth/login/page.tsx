@@ -5,15 +5,16 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { Button, Input, alert } from "pillardash-ui-react";
-
 import { handleApiResponse } from "@/api/config/util";
 import Logo from "@/components/layouts/Logo";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 import EyeIcon from "@/components/utilities/Icons/EyeIcon";
 import EyeOffIcon from "@/components/utilities/Icons/EyeOffIcon";
 import LockIcon from "@/components/utilities/Icons/LockIcon";
 import MessagingIcon from "@/components/utilities/Icons/MessagingIcon";
 import { useAuth } from "@/hooks/useAuth";
+import { alert } from "@/lib/alert";
 import { ROUTES } from "@/lib/routes";
 
 export default function LoginPage() {
@@ -120,7 +121,7 @@ export default function LoginPage() {
                     />
                 </div>
                 <Link href={ROUTES.forgotPassword}>
-                    <p className='text-right text-sm text-primary hover:underline'>
+                    <p className='text-primary text-right text-sm hover:underline'>
                         Forgot Password?
                     </p>
                 </Link>
@@ -138,7 +139,7 @@ export default function LoginPage() {
                     Don&#39;t have an account?{" "}
                     <Link
                         href={ROUTES.signup}
-                        className='font-medium text-primary-600 hover:text-primary-700'
+                        className='text-primary-600 hover:text-primary-700 font-medium'
                     >
                         Sign up
                     </Link>

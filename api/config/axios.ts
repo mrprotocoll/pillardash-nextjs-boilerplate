@@ -1,7 +1,7 @@
 import Axios from "axios";
-import { alert } from "pillardash-ui-react";
 
 import { ApiErrorHandler } from "@/api/config/error";
+import { alert } from "@/lib/alert";
 import { ROUTES } from "@/lib/routes";
 import { logout } from "@/redux/reducers/authSlice";
 import { store } from "@/redux/store";

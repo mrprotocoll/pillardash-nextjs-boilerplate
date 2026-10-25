@@ -1,6 +1,5 @@
-import { alert } from "pillardash-ui-react";
-
 import { ApiResponse } from "@/api/types";
+import { alert } from "@/lib/alert";
 
 export const handleApiResponse = <T>({
     response,

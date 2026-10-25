@@ -5,13 +5,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { Button, Input, alert } from "pillardash-ui-react";
-
 import { handleApiResponse } from "@/api/config/util";
+import Button from "@/components/ui/Button";
+import Input from "@/components/ui/Input";
 import EyeIcon from "@/components/utilities/Icons/EyeIcon";
 import EyeOffIcon from "@/components/utilities/Icons/EyeOffIcon";
 import LockIcon from "@/components/utilities/Icons/LockIcon";
 import { useAuth } from "@/hooks/useAuth";
+import { alert } from "@/lib/alert";
 import { ROUTES } from "@/lib/routes";
 
 export default function ResetPassword() {
@@ -68,7 +69,7 @@ export default function ResetPassword() {
     return (
         <>
             <div className='w-full max-w-md space-y-5'>
-                <p className='text-[28px] font-[600] text-dark'>Create a New Password</p>
+                <p className='text-dark text-[28px] font-[600]'>Create a New Password</p>
                 <p className='text-[13px] text-gray-400'>
                     Enter a strong, secure password you will remember. This will replace your old
                     one.
@@ -131,7 +132,7 @@ export default function ResetPassword() {
                 <div className='flex gap-3'>
                     <p className='text-gray-600'>Changed your mind? </p>{" "}
                     <Link href={ROUTES.login}>
-                        <p className='text-sm text-primary-600 hover:underline'>Go back to login</p>
+                        <p className='text-primary-600 text-sm hover:underline'>Go back to login</p>
                     </Link>
                 </div>
             </div>

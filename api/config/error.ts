@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
-import { alert } from "pillardash-ui-react";
 
 import { ApiError } from "@/api/types";
+import { alert } from "@/lib/alert";
 
 export class ApiErrorHandler {
     static handle(error: unknown) {
